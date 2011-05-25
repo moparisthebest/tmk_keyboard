@@ -17,6 +17,7 @@
 
 
 static uint8_t last_leds = 0;
+static bool scroll_lock = false;
 
 
 void keyboard_init(void)
@@ -105,9 +106,14 @@ void keyboard_proc(void)
     }
 
     layer_switching(fn_bits);
-
-    if (command_proc()) {
+    uint8_t ret = command_proc();
+    if (ret != 0 && ret != SCROLL_LOCK_TOGGLE) {
+        _delay_ms(500);
         return;
+    }
+
+    if(ret == SCROLL_LOCK_TOGGLE){
+        scroll_lock = !scroll_lock;
     }
 
     // TODO: should send only when changed from last report
@@ -129,10 +135,12 @@ void keyboard_proc(void)
     if (ps2_mouse_read() == 0)
         ps2_mouse_usb_send();
 #endif
-
-    if (last_leds != host_keyboard_leds()) {
-        keyboard_set_leds(host_keyboard_leds());
-        last_leds = host_keyboard_leds();
+        uint8_t current_leds = (scroll_lock || IS_SHORTCUT()) ? (host_keyboard_leds() | (1<<USB_LED_SCROLL_LOCK)) : host_keyboard_leds();
+    if (last_leds != current_leds) {
+        keyboard_set_leds(current_leds);
+	    last_leds = current_leds;
+        if(ret == SCROLL_LOCK_TOGGLE)
+            _delay_ms(500);
     }
 }
 

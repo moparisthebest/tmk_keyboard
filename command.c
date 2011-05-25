@@ -21,11 +21,16 @@
 
 
 static void help(void);
-static void switch_layer(uint8_t layer);
+static uint8_t switch_layer(uint8_t layer);
 
 
 uint8_t command_proc(void)
 {
+    // check if we just want to swap from qwerty->dvorak and back
+    if(IS_SWAP()){
+        return switch_layer(current_layer > 0 ? 0 : 1);
+    }
+
     if (!IS_COMMAND())
         return 0;
 
@@ -138,25 +143,24 @@ uint8_t command_proc(void)
             print("clear matrix\n");
             break;
         case KB_0:
-            switch_layer(0);
-            break;
+            return switch_layer(0);
         case KB_1:
-            switch_layer(1);
-            break;
+            return switch_layer(1);
         case KB_2:
-            switch_layer(2);
-            break;
+            return switch_layer(2);
         case KB_3:
-            switch_layer(3);
-            break;
+            return switch_layer(3);
         case KB_4:
-            switch_layer(4);
-            break;
+            return switch_layer(4);
+        case KB_5:
+            return switch_layer(5);
+        case KB_6:
+            return switch_layer(2);
         default:
             processed = 0;
     }
-    if (processed)
-        _delay_ms(500);
+    //if (processed)
+    //    _delay_ms(500);
     print_enable = last_print_enable;
     return processed;
 }
@@ -184,11 +188,24 @@ static void help(void)
     print("4: switch to Layer4 \n");
 }
 
-static void switch_layer(uint8_t layer)
+static uint8_t switch_layer(uint8_t layer)
 {
     print("current_layer: "); phex(current_layer); print("\n");
     print("default_layer: "); phex(default_layer); print("\n");
+    uint8_t ret = 1;
+    if(layer == 0 && current_layer != 0){
+	    DEBUG_LED_OFF;
+        ret = SCROLL_LOCK_TOGGLE;
+	    //led_set(USB_LED_SCROLL_LOCK);
+    }
+    else if(current_layer == 0 && layer != 0){
+	    DEBUG_LED_ON;
+        ret = SCROLL_LOCK_TOGGLE;
+	    //led_set(USB_LED_SCROLL_LOCK);
+    }
     current_layer = layer;
     default_layer = layer;
     print("switch to Layer: "); phex(layer); print("\n");
+    //_delay_ms(500); // now done in keyboard.c
+    return ret;
 }

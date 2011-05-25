@@ -67,7 +67,7 @@ static uint8_t new_layer(uint8_t fn_bits);
 
 uint8_t layer_get_keycode(uint8_t row, uint8_t col)
 {
-    uint8_t code = keymap_get_keycode(current_layer, row, col);
+	uint8_t code = keymap_get_keycode(IS_SHORTCUT() ? SHORTCUT_LAYOUT : current_layer, row, col);
     // normal key or mouse key
     if ((IS_KEY(code) || IS_MOUSEKEY(code))) {
         layer_used = true;
@@ -82,7 +82,7 @@ void layer_switching(uint8_t fn_bits)
     // layer switching
     static uint8_t last_fn = 0;
     static uint8_t last_mods = 0;
-    static uint16_t last_timer = 0; 
+    static uint16_t last_timer = 0;
     static uint8_t sent_fn = 0;
 
     if (fn_bits == last_fn) { // Fn state is not changed
