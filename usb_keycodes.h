@@ -1,4 +1,4 @@
-/* 
+/*
  * Key codes from HID Keyboard/Keypad Page
  * http://www.usb.org/developers/devclass_docs/Hut1_12.pdf
  *

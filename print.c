@@ -1,17 +1,17 @@
 /* Very basic print functions, intended to be used with usb_debug_only.c
  * http://www.pjrc.com/teensy/
  * Copyright (c) 2008 PJRC.COM, LLC
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,6 +21,7 @@
  * THE SOFTWARE.
  */
 
+//#include <stdio.h>
 #include <avr/io.h>
 #include <avr/pgmspace.h>
 #include "print.h"
@@ -40,6 +41,16 @@ void print_P(const char *s)
 		if (c == '\n') sendchar('\r');
 		sendchar(c);
 	}
+}
+
+void pdec(const int x)
+{
+    if (!print_enable) return;
+    char ascii[32];
+    sprintf(ascii,"%i",x);
+    for (int i = 0; i < 32 && ascii[i] != 0; ++i) {
+        sendchar(ascii[i]);
+    }
 }
 
 void phex1(unsigned char c)

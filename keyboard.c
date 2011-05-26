@@ -55,10 +55,12 @@ void keyboard_proc(void)
     for (int row = 0; row < matrix_rows(); row++) {
         for (int col = 0; col < matrix_cols(); col++) {
             if (!matrix_is_on(row, col)) continue;
-
+            //print("row,col: "); pdec(row); print(","); pdec(col); print("\n");
             uint8_t code = layer_get_keycode(row, col);
+            //print("keycode: "); pdec(code); print("\n");
             if (code == KB_NO) {
                 // do nothing
+                print("KB_NO: "); pdec(row); print(","); pdec(col); print("\n");
             } else if (IS_MOD(code)) {
                 host_add_mod_bit(MOD_BIT(code));
             } else if (IS_FN(code)) {
@@ -67,6 +69,7 @@ void keyboard_proc(void)
 #ifdef USB_EXTRA_ENABLE
             // audio control & system control
             else if (code == KB_MUTE) {
+                //host_add_key(code); // this seems to work too...
                 host_audio_send(AUDIO_MUTE);
                 _delay_ms(500);
                 host_audio_send(0);

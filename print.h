@@ -12,6 +12,7 @@ extern bool print_enable;
 #define print(s) print_P(PSTR(s))
 
 void print_P(const char *s);
+void pdec(const int x);
 void phex(unsigned char c);
 void phex16(unsigned int i);
 void pbin(unsigned char c);
