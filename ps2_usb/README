@@ -1,7 +1,10 @@
-PS/2 to USB keyboard converter
+PS/2 to USB Dvorak/Qwerty keyboard converter
 ==============================
 
-This firmware converts PS/2 keyboard protocol to USB.
+This firmware converts PS/2 keyboard protocol to USB,
+and is specially suited for users who use the Dvorak
+keyboard layout, but want to easily switch between
+layouts and keep Qwerty shortcuts (like Ctrl+c).
 
 
 Demostration build
@@ -10,16 +13,20 @@ In this demo build, you can try several layouts,
 mouse keys and USB NKRO.
 
 Special keys:
-    Magic+0:    Qwerty with mouse keys(default)
+    Magic+0:    Dvorak (default)
     Magic+1:    Qwerty
-    Magic+2:    Colemak
-    Magic+3:    Dvorak
-    Magic+4:    Workman
+    Magic+2:    Dvorak with mouse keys
+    Magic+3:    Qwerty with mouse keys
     Magic+N:    toggles NKRO/6KRO(6KRO by default)
     Magic+Esc:  sends Power Event
-    where Magic=(LShift+RShift) or (LControl+RShift)
+    where Magic=(LShift+RShift)
 
-Keybinds:
+    LCtrl+LShift+RCtrl+RShift swaps between layout
+    0 (Dvorak) and 1 (Qwerty), the scroll lock LED,
+    and the LED on the Teensy indicates this change
+    by being on for Qwerty, and off for Dvorak.
+
+Keybinds: (keys are specified in qwerty layout)
     Fn0+(hjkl): Mouse key move(vi cursor)
     Fn0+(yuio): Mouse wheel(left,down,up,right)
     Fn0+space:  Mouse button1
