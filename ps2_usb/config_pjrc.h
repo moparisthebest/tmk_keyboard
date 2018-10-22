@@ -18,14 +18,14 @@
 
 /* key combination for command */
 #define IS_COMMAND() ( \
-    keyboard_report->mods == (BIT_LSHIFT | BIT_RSHIFT) \
+    keyboard_report->mods == (BIT_LCTRL | BIT_RCTRL) \
 )
 
 /* key combination for command, reverts to defined layout */
 #define IS_SHORTCUT() ( \
     keyboard_report->mods & BIT_LCTRL \
 )
-#define SHORTCUT_LAYOUT 1
+#define SHORTCUT_LAYOUT 0
 
 /* key combination for command */
 #define IS_SWAP() ( \
